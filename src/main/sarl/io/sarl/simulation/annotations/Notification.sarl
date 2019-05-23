@@ -1,0 +1,12 @@
+/** 
+ * 
+ */
+package io.sarl.simulation.annotations
+
+/** 
+ * Annotation placed on events to indicate they should be used for notification purposes
+ * @author Alexandre Lombard
+ * 
+ */
+annotation Notification {
+}

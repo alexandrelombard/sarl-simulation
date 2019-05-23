@@ -1,0 +1,12 @@
+/** 
+ * 
+ */
+package io.sarl.simulation.annotations
+
+/** 
+ * Annotation placed on events to indicate their listeners should react to the event
+ * @author Alexandre Lombard
+ * 
+ */
+annotation Request {
+}

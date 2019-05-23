@@ -1,0 +1,68 @@
+/** 
+ * 
+ */
+package io.sarl.simulation.behaviors
+
+import io.sarl.simulation.utils.ActiveWaitLock
+import io.sarl.core.DefaultContextInteractions
+import io.sarl.core.Logging
+
+import static io.sarl.simulation.scheduling.FixedStepBlockingSimulationStrategy.fixedStepBlockingSimulationStrategy
+//import static io.sarl.simulation.scheduling.RealTimeSimulationStrategy.realTimeSimulationStrategy
+
+import io.sarl.core.Schedules
+import io.sarl.simulation.events.StartSimulation
+import io.sarl.simulation.events.SimulationInitialized
+import io.sarl.simulation.events.PerceptionsPropagated
+import io.sarl.simulation.events.RetrievePerceptions
+import io.sarl.simulation.capacities.SimulationControlCapacity
+
+/** 
+ * Simulation controller behavior
+ * @author Alexandre Lombard
+ * 
+ */
+behavior SimulationController {
+	uses Logging, DefaultContextInteractions, Schedules
+	
+	uses SimulationControlCapacity
+
+	/** Simulation step */
+	val simulationStepMs = 200.0f
+
+	/**	Internal lock */
+	val influencesPropagated = new ActiveWaitLock()
+	
+	on StartSimulation {
+		info("Start Simulation event received...")
+		
+		simPause(true)
+		
+		val simulationStrategy = fixedStepBlockingSimulationStrategy [
+			retrievePerceptionsBy = [ retrievePerceptions ]
+			canContinueIf = [!influencesPropagated.isLocked]
+			continueSimulationBy = [
+				info("Continuing simulation (begin)...")
+				simContinueForTime(simulationStepMs / 1000.0f)
+				Thread.sleep(simulationStepMs.longValue)
+				influencesPropagated.lock
+				info("Continuing simulation (end)...")
+			]
+		]
+
+		atFixedDelay(simulationStepMs.longValue) [simulationStrategy.loop]
+		
+		emit(new SimulationInitialized)
+	}
+	
+	on PerceptionsPropagated {
+		info("Perceptions propagated...")
+		
+		influencesPropagated.unlock
+	}
+	
+	private def retrievePerceptions {
+		emit(new RetrievePerceptions)
+	}
+	
+}

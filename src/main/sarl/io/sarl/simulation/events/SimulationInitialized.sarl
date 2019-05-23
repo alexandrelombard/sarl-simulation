@@ -1,0 +1,14 @@
+/** 
+ * 
+ */
+package io.sarl.simulation.events
+
+import io.sarl.simulation.annotations.Notification
+
+/** 
+ * Event emitted when the simulation has been initialized
+ * @author Alexandre Lombard
+ * 
+ */
+@Notification
+event SimulationInitialized

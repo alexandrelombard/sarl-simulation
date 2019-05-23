@@ -1,0 +1,14 @@
+/** 
+ * 
+ */
+package io.sarl.simulation.events
+
+import io.sarl.simulation.annotations.Request
+
+/** 
+ * Event that should be emitted so the controller knows the simulation must be started
+ * @author Alexandre Lombard
+ * 
+ */
+@Request
+event StartSimulation

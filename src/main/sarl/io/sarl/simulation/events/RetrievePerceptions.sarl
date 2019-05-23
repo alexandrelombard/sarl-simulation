@@ -1,0 +1,14 @@
+/** 
+ * 
+ */
+package io.sarl.simulation.events
+
+import io.sarl.simulation.annotations.Request
+
+/** 
+ * Event that should be emitted so the perceptions retriever knows it must retrieve the perceptions
+ * @author Alexandre Lombard
+ * 
+ */
+ @Request
+event RetrievePerceptions
