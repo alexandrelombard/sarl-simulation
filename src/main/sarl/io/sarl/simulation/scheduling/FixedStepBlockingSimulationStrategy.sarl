@@ -17,6 +17,8 @@ class FixedStepBlockingSimulationStrategy implements SimulationStrategy {
 	val continueSimulation: Procedure0
 	val canContinue: () => Boolean
 	
+	var previousTime : Long = System.currentTimeMillis
+	
 	new (
 		retrievePerceptions: Procedure0,
 		canContinue: () => Boolean,
@@ -37,6 +39,9 @@ class FixedStepBlockingSimulationStrategy implements SimulationStrategy {
 		}
 		
 		continueSimulation.apply()
+		
+		System.out.println(System.currentTimeMillis - previousTime)
+		previousTime = System.currentTimeMillis
 	}
 
 	/** 
